@@ -32,7 +32,13 @@ class App extends Component {
           </div>
           <div className="list">
             {list.map((movie, index) => {
-              return <MovieCard movie={movie} key={`movies-${index}`} />;
+              return (
+                <MovieCard
+                  movie={movie}
+                  key={`movies-${index}`}
+                  dispatch={this.props.store.dispatch}
+                />
+              );
             })}
           </div>
         </div>

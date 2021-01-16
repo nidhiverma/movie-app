@@ -8,14 +8,7 @@ import movies from "./reducers";
 
 const store = createStore(movies);
 console.log("store", store);
-console.log("Before State", store.getState());
-
-store.dispatch({
-  type: "ADD_NAME",
-  movies: [{ name: "Superman" }],
-});
-
-console.log("After State", store.getState());
+console.log("Initital State", store.getState());
 
 ReactDOM.render(
   <React.StrictMode>
