@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
 import { data } from "../data";
-import { addMovies } from "../actions";
+import { addMovies, setShowFavorites } from "../actions";
 
 class App extends Component {
   componentDidMount() {
@@ -28,20 +28,36 @@ class App extends Component {
     return false;
   };
 
+  onChangeTab = (val) => {
+    this.props.store.dispatch(setShowFavorites(val));
+  };
+
   render() {
-    const { list } = this.props.store.getState(); // {list: [], favorites: []}
+    const { list, favorites, showFavorites } = this.props.store.getState(); // {list: [], favorites: []}
     console.log("RENDER", this.props.store.getState());
+
+    const displayMovies = showFavorites ? favorites : list;
 
     return (
       <div className="App">
         <Navbar />
         <div className="main">
           <div className="tabs">
-            <div className="tab">Movies</div>
-            <div className="tab">Favorites</div>
+            <div
+              className={`tab ${showFavorites ? "" : "active-tabs"}`}
+              onClick={() => this.onChangeTab(false)}
+            >
+              Movies
+            </div>
+            <div
+              className={`tab ${showFavorites ? "active-tabs" : ""}`}
+              onClick={() => this.onChangeTab(true)}
+            >
+              Favorites
+            </div>
           </div>
           <div className="list">
-            {list.map((movie, index) => {
+            {displayMovies.map((movie, index) => {
               return (
                 <MovieCard
                   movie={movie}
@@ -52,6 +68,21 @@ class App extends Component {
               );
             })}
           </div>
+          {displayMovies.length === 0 ? (
+            <div
+              style={{
+                height: "400px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: "30px",
+              }}
+            >
+              There are no movies to display.
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     );
