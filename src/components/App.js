@@ -11,13 +11,23 @@ class App extends Component {
       console.log("UPDATED"); // whenever an action is dispatched
       this.forceUpdate();
     });
-
     // make an api call
     // dispatch action
     store.dispatch(addMovies(data));
-
     console.log("STATE", this.props.store.getState());
   }
+
+  isMovieFavorite = (movie) => {
+    const { favorites } = this.props.store.getState();
+    const index = favorites.indexOf(movie);
+
+    if (index !== -1) {
+      // found the movie
+      return true;
+    }
+    return false;
+  };
+
   render() {
     const { list } = this.props.store.getState(); // {list: [], favorites: []}
     console.log("RENDER", this.props.store.getState());
@@ -37,6 +47,7 @@ class App extends Component {
                   movie={movie}
                   key={`movies-${index}`}
                   dispatch={this.props.store.dispatch}
+                  isFavorite={this.isMovieFavorite(movie)}
                 />
               );
             })}
