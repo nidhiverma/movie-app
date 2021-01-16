@@ -19,8 +19,8 @@ class App extends Component {
     console.log("STATE", this.props.store.getState());
   }
   render() {
-    const movies = this.props.store.getState();
-    console.log("RENDER");
+    const { list } = this.props.store.getState(); // {list: [], favorites: []}
+    console.log("RENDER", this.props.store.getState());
 
     return (
       <div className="App">
@@ -31,7 +31,7 @@ class App extends Component {
             <div className="tab">Favorites</div>
           </div>
           <div className="list">
-            {movies.map((movie, index) => {
+            {list.map((movie, index) => {
               return <MovieCard movie={movie} key={`movies-${index}`} />;
             })}
           </div>
