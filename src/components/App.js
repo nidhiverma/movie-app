@@ -31,7 +31,7 @@ class App extends Component {
   onChangeTab = (val) => {
     this.props.store.dispatch(setShowFavorites(val));
   };
-
+  
   render() {
     const { list, favorites, showFavorites } = this.props.store.getState(); // {list: [], favorites: []}
     console.log("RENDER", this.props.store.getState());
