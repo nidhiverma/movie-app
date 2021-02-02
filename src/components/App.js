@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   isMovieFavorite = (movie) => {
-    const { favorites } = this.props.store.getState();
+    const { favorites } = this.props.store.getState().movies;
     const index = favorites.indexOf(movie);
 
     if (index !== -1) {
@@ -31,9 +31,10 @@ class App extends Component {
   onChangeTab = (val) => {
     this.props.store.dispatch(setShowFavorites(val));
   };
-  
+
   render() {
-    const { list, favorites, showFavorites } = this.props.store.getState(); // {list: [], favorites: []}
+    const { movies } = this.props.store.getState();
+    const { list, favorites, showFavorites } = movies; // {list: [], favorites: []}
     console.log("RENDER", this.props.store.getState());
 
     const displayMovies = showFavorites ? favorites : list;
