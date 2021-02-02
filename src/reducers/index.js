@@ -59,7 +59,7 @@ const initialRootState = {
 
 export default function rootReducer(state = initialRootState, action) {
   return {
-    movies: movies(state, action),
-    search: search(state, action),
+    movies: movies(state.movies, action),
+    search: search(state.search, action),
   };
 }
