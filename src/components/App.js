@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import Navbar from "./Navbar";
-import MovieCard from "./MovieCard";
-import { data } from "../data";
-import { addMovies, setShowFavorites } from "../actions";
+import React, { Component } from 'react';
+import Navbar from './Navbar';
+import MovieCard from './MovieCard';
+import { data } from '../data';
+import { addMovies, setShowFavorites } from '../actions';
 
 class App extends Component {
   componentDidMount() {
     const { store } = this.props;
     store.subscribe(() => {
-      console.log("UPDATED"); // whenever an action is dispatched
+      console.log('UPDATED'); // whenever an action is dispatched
       this.forceUpdate();
     });
     // make an api call
     // dispatch action
     store.dispatch(addMovies(data));
-    console.log("STATE", this.props.store.getState());
+    console.log('STATE', this.props.store.getState());
   }
 
   isMovieFavorite = (movie) => {
@@ -33,57 +33,37 @@ class App extends Component {
   };
 
   render() {
-    const { movies } = this.props.store.getState();
+    const { movies, search } = this.props.store.getState();
     const { list, favorites, showFavorites } = movies; // {list: [], favorites: []}
-    console.log("RENDER", this.props.store.getState());
+    
+    console.log('RENDER', this.props.store.getState());
 
     const displayMovies = showFavorites ? favorites : list;
 
     return (
-      <div className="App">
-        <Navbar />
-        <div className="main">
-          <div className="tabs">
-            <div
-              className={`tab ${showFavorites ? "" : "active-tabs"}`}
-              onClick={() => this.onChangeTab(false)}
-            >
-              Movies
-            </div>
-            <div
-              className={`tab ${showFavorites ? "active-tabs" : ""}`}
-              onClick={() => this.onChangeTab(true)}
-            >
-              Favorites
-            </div>
+      /* prettier-ignore */
+      <div className='App'>
+        <Navbar dispatch={this.props.store.dispatch} search={search} />
+
+        <div className='main'>
+          <div className='tabs'>
+            <div className={`tab ${showFavorites ? '':'active-tabs'}`} onClick={() => this.onChangeTab(false)}>Movies</div>
+            <div className={`tab ${showFavorites ? 'active-tabs':''}`} onClick={() => this.onChangeTab(true)}>Favorites</div>
           </div>
-          <div className="list">
-            {displayMovies.map((movie, index) => {
+
+          <div className='list'>
+            {displayMovies.map((movie) => {
               return (
                 <MovieCard
                   movie={movie}
-                  key={`movies-${index}`}
+                  key={movie.imdbID}
                   dispatch={this.props.store.dispatch}
                   isFavorite={this.isMovieFavorite(movie)}
                 />
               );
             })}
           </div>
-          {displayMovies.length === 0 ? (
-            <div
-              style={{
-                height: "400px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontSize: "30px",
-              }}
-            >
-              There are no movies to display.
-            </div>
-          ) : (
-            ""
-          )}
+          { displayMovies.length === 0 ? <div style={style}> There are no movies to display.</div> : '' }
         </div>
       </div>
     );
@@ -91,3 +71,11 @@ class App extends Component {
 }
 
 export default App;
+
+const style = {
+  height: '400px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontSize: '30px',
+};
